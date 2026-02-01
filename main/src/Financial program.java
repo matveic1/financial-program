@@ -39,45 +39,27 @@ class Main {
     }
 }
 
-class ExchangeRate {
-    private double exchangeRateUSD = 94.8;
-    private double exchangeRateEUR = 103.8;
-    private double exchangeRateCNY = 13.1;
-
-    private int currency;
-    private double amount;
+record ExchangeRate(int currency, double amount) {
 
     public double getExchangeRateUSD() {
-        return exchangeRateUSD;
+        return 94.8;
     }
 
     public double getExchangeRateEUR() {
-        return exchangeRateEUR;
+        return 103.8;
     }
 
     public double getExchangeRateCNY() {
-        return exchangeRateCNY;
-    }
-
-    public int getCurrency() {
-        return currency;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public ExchangeRate(int currency, double amount) {
-        this.currency = currency;
-        this.amount = amount;
+        return 13.1;
     }
 
     public double exchange() {
-        double amount = getAmount();
+        double amount = amount();
         double excUSD = getExchangeRateUSD();
         double excEUR = getExchangeRateEUR();
         double excCNY = getExchangeRateCNY();
-        return switch (currency) {
+        int cny = currency();
+        return switch (cny) {
             case 2 -> excUSD * amount;
             case 3 -> excEUR * amount;
             case 4 -> excCNY * amount;
@@ -86,64 +68,35 @@ class ExchangeRate {
     }
 }
 
-class InterestRate {
-    private double interestRateRUB = 7;
-    private double interestRateUSD = 1;
-    private double interestRateEUR = 0.8;
-    private double interestRateCNY = 1.5;
-
-    private int currency, years;
-    private double amount;
+record InterestRate(int currency, int years, double amount) {
 
     public double getInterestRateRUB() {
-        return interestRateRUB;
+        return 7;
     }
 
     public double getInterestRateUSD() {
-        return interestRateUSD;
+        return 1;
     }
 
     public double getInterestRateEUR() {
-        return interestRateEUR;
+        return 0.8;
     }
 
     public double getInterestRateCNY() {
-        return interestRateCNY;
-    }
-
-    public int getCurrency() {
-        return currency;
-    }
-    public int getYears() {
-        return years;
-    }
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public InterestRate() {}
-
-    public InterestRate(int currency, int years, double amount) {
-        this.currency = currency;
-        this.years = years;
-        this.amount = amount;
+        return 1.5;
     }
 
     public double interest() {
         double interestRate;
-        switch (getCurrency()) {
+        switch (currency()) {
             case 2 -> interestRate = getInterestRateUSD();
             case 3 -> interestRate = getInterestRateEUR();
             case 4 -> interestRate = getInterestRateCNY();
             default -> interestRate = getInterestRateRUB();
         }
-        double amount = getAmount();
-        for (int i = 1; i <= years; i++) {
-           amount = amount + amount * (interestRate / 100);
+        double amount = amount();
+        for (int i = 1; i <= years(); i++) {
+            amount = amount + amount * (interestRate / 100);
 
             if (i % 2 == 0) {
                 amount = amount + amount / 100;
